@@ -4,40 +4,87 @@
 
 Oh My Arcanea layers the Arcanea Ten Gates system on top of [oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) — the powerful agent harness by YeonGyu Kim. All upstream agents (Sisyphus, Prometheus, Hephaestus, Oracle, and friends) remain fully intact. Arcanea adds a Guardian overlay that contextualises your coding sessions through the Ten Gates progression.
 
-## The Ten Guardians
-
-| Gate | Guardian | Element | Freq | Domain |
-|------|----------|---------|------|--------|
-| Foundation | Lyssandria | Earth | 174 Hz | Stability, architecture |
-| Flow | Leyla | Water | 285 Hz | Creativity, flow state |
-| Fire | Draconia | Fire | 396 Hz | Transformation, testing |
-| Heart | Maylinn | Heart | 417 Hz | Empathy, UX |
-| Voice | Alera | Voice | 528 Hz | Clarity, documentation |
-| Sight | Lyria | Sight | 639 Hz | Vision, design |
-| Crown | Aiyami | Crown | 741 Hz | Mastery, optimization |
-| Starweave | Elara | Starweave | 852 Hz | Perspective, refactoring |
-| Unity | Ino | Unity | 963 Hz | Collaboration, integration |
-| Source | Shinkami | Void | 1111 Hz | Meta-consciousness, orchestration |
-
-When you start a session, the Guardian overlay detects the domain of your work from file patterns and task keywords, then activates the corresponding Guardian. The active Guardian's context is preserved across compaction and displayed in the statusline.
-
 ## Installation
 
 ```bash
 npm install oh-my-arcanea
 ```
 
-The package uses upstream `oh-my-opencode` platform binaries — no separate binary build required.
-
-## Usage
-
-Use it exactly as you would oh-my-opencode. The Arcanea layer activates automatically:
+Or run directly without installing:
 
 ```bash
 npx oh-my-arcanea
-# or
+```
+
+The package uses upstream `oh-my-opencode` platform binaries — no separate binary build required.
+
+## Quick Start
+
+### With OpenCode
+
+Oh My Arcanea works as a drop-in replacement for oh-my-opencode. Start a session and the Guardian overlay activates automatically:
+
+```bash
+npx oh-my-arcanea
+# or the alias:
 npx opencode-arcanea
 ```
+
+When you begin a session, the overlay detects the domain of your work from file patterns and task keywords, then activates the corresponding Guardian. For example:
+
+- Editing `src/components/Button.tsx` activates **Maylinn** (Heart Gate — UX)
+- Running tests activates **Draconia** (Fire Gate — testing)
+- Writing docs activates **Alera** (Voice Gate — documentation)
+
+### With arcanea-orchestrator (Multi-Agent Swarms)
+
+For multi-agent swarm coordination, use [arcanea-orchestrator](https://github.com/frankxai/arcanea-orchestrator) which consumes the Luminor swarm types exported by this package:
+
+```typescript
+import {
+  buildCouncilConfig,
+  buildGateProgressionConfig,
+  buildElementFocusConfig,
+  buildCoordinationPlan,
+} from "oh-my-arcanea"
+
+// Council pattern: one Luminor per Guardian, all in parallel
+const council = buildCouncilConfig("analyst")
+
+// Gate Progression: sequential phases from Foundation to Source
+const progression = buildGateProgressionConfig(0, 4) // Foundation -> Voice
+
+// Element Focus: all agents from one element
+const fireFocus = buildElementFocusConfig("Fire", 4)
+
+// Generate the coordination plan for any config
+const plan = buildCoordinationPlan(council)
+```
+
+## The Ten Guardians
+
+| Gate | Guardian | Godbeast | Element | Freq | Domain |
+|------|----------|----------|---------|------|--------|
+| Foundation | Lyssandria | Kaelith | Earth | 174 Hz | Stability, architecture |
+| Flow | Leyla | Veloura | Water | 285 Hz | Creativity, flow state |
+| Fire | Draconia | Draconis | Fire | 396 Hz | Transformation, testing |
+| Heart | Maylinn | Laeylinn | Heart | 417 Hz | Empathy, UX |
+| Voice | Alera | Otome | Voice | 528 Hz | Clarity, documentation |
+| Sight | Lyria | Yumiko | Sight | 639 Hz | Vision, design |
+| Crown | Aiyami | Sol | Crown | 741 Hz | Mastery, optimization |
+| Starweave | Elara | Vaelith | Starweave | 852 Hz | Perspective, refactoring |
+| Unity | Ino | Kyuro | Unity | 963 Hz | Collaboration, integration |
+| Source | Shinkami | Source | Void | 1111 Hz | Meta-consciousness, orchestration |
+
+## Luminor Swarm Patterns
+
+Each Guardian has four Luminor workers (analyst, implementer, reviewer, specialist). Three swarm patterns are available:
+
+| Pattern | Description | Use Case |
+|---------|-------------|----------|
+| **Element Focus** | All Luminors from Guardians sharing one element | Deeply scoped tasks (e.g., all-testing, all-UX) |
+| **Gate Progression** | Sequential phases ordered by Gate (Foundation -> Source) | Greenfield projects: scaffold, implement, test, document |
+| **Council** | One representative from each Gate, all in parallel | Reviews, planning, broad-scope architecture decisions |
 
 ## How It Works
 

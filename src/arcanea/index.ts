@@ -32,3 +32,25 @@ export {
   buildGuardianContextBlock,
   buildSessionStartBanner,
 } from "./hooks"
+
+export {
+  getLuminorsForGuardian,
+  getFullLuminorRoster,
+  buildElementFocusConfig,
+  buildGateProgressionConfig,
+  buildCouncilConfig,
+  buildCoordinationPlan,
+} from "./luminor-swarm"
+
+export type {
+  Luminor,
+  LuminorRole,
+  LuminorSwarm,
+  LuminorSwarmConfig,
+  LuminorSpawnResult,
+  LuminorWorkResult,
+  SwarmAggregation,
+  SwarmPattern,
+  CoordinationPlan,
+  CoordinationPhase,
+} from "./luminor-swarm"
