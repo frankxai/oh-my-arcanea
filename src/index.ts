@@ -13,8 +13,17 @@ import { createFirstMessageVariantGate } from "./shared/first-message-variant"
 import { injectServerAuthIntoClient, log } from "./shared"
 import { startTmuxCheck } from "./tools"
 
+// Arcanea Guardian Overlay
+import {
+  activateGuardianForSession,
+  getSessionGuardian,
+  clearSessionGuardian,
+  buildGuardianContextBlock,
+  buildSessionStartBanner,
+} from "./arcanea"
+
 const OhMyOpenCodePlugin: Plugin = async (ctx) => {
-  log("[OhMyOpenCodePlugin] ENTRY - plugin loading", {
+  log("[OhMyArcanea] ENTRY - plugin loading (Guardian overlay active)", {
     directory: ctx.directory,
   })
 
@@ -88,6 +97,10 @@ const OhMyOpenCodePlugin: Plugin = async (ctx) => {
       if (hooks.compactionContextInjector) {
         output.context.push(hooks.compactionContextInjector(_input.sessionID))
       }
+
+      // Arcanea: Preserve Guardian context across compaction
+      const guardianContext = buildGuardianContextBlock(_input.sessionID)
+      output.context.push(guardianContext)
     },
   }
 }
