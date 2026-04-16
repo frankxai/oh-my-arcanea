@@ -67,3 +67,10 @@ bun test
 - Export new public API through `src/arcanea/index.ts`
 - Keep files under 500 lines
 - Run `bun run typecheck` after changes
+
+## Cached-Belief Validation Protocol
+
+Any claim about CURRENT state — versions, ship status, file paths, architecture, deployment — requires same-turn verification (Read/Bash) OR explicit prefix: "unverified, from [memory|prior-turn] (date X):".
+
+Memory is authoritative ONLY for: intent, strategy, preferences, decision history.
+Memory is NEVER authoritative for: current state of code, deploys, or systems.
