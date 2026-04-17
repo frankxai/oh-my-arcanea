@@ -1,0 +1,48 @@
+$schema: https://arcanea.ai/schema/overlay-manifest/v1.json
+
+name: oh-my-arcanea
+version: 0.1.0
+description: |
+  Arcanea overlay for OpenCode. Teaches the opencode CLI about Arcanea
+  canon, voice, skills, and hooks. Consumes @arcanea/router-spec for
+  model routing per task class.
+
+surface: oh-my-arcanea
+
+runtime:
+  binary: opencode
+  minVersion: 0.15.0
+  configDir: ~/.config/opencode
+
+install:
+  - step: copy
+    from: ./.opencode
+    to: "{configDir}"
+    merge: true
+  - step: copy
+    from: ./packages
+    to: "{configDir}/agents"
+    merge: true
+  - step: copy
+    from: ./.arcanea
+    to: "{configDir}/arcanea"
+    merge: true
+
+routerSpec:
+  source: "@arcanea/router-spec"
+  reads:
+    - models
+    - tasks
+    - surfaces.oh-my-arcanea
+
+dependencies:
+  "@arcanea/router-spec": ">=1.0.0"
+
+agents:
+  definitions: ./packages
+  agentsMd: ./AGENTS.md
+
+preview:
+  commands:
+    - cmd: "opencode run -p 'design a React component'"
+      description: "invokes with oh-my-arcanea overlay; router-spec picks kimi-k2.5-free"
