@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs"
 import { createRequire } from "node:module"
 import { dirname, join } from "node:path"
+import { homedir } from "node:os"
 
 import type { DependencyInfo } from "../types"
 
@@ -115,9 +116,28 @@ function findCommentCheckerPackageBinary(): string | null {
   return null
 }
 
+function findCommentCheckerCacheBinary(): string | null {
+  const binaryName = process.platform === "win32" ? "comment-checker.exe" : "comment-checker"
+  const cacheCandidates =
+    process.platform === "win32"
+      ? [
+          join(process.env.LOCALAPPDATA || join(homedir(), "AppData", "Local"), "oh-my-opencode", "bin", binaryName),
+          join(process.env.APPDATA || join(homedir(), "AppData", "Roaming"), "oh-my-opencode", "bin", binaryName),
+        ]
+      : [join(process.env.XDG_CACHE_HOME || join(homedir(), ".cache"), "oh-my-opencode", "bin", binaryName)]
+
+  for (const candidate of cacheCandidates) {
+    if (existsSync(candidate)) return candidate
+  }
+
+  return null
+}
+
 export async function checkCommentChecker(): Promise<DependencyInfo> {
   const binaryCheck = await checkBinaryExists("comment-checker")
-  const resolvedPath = binaryCheck.exists ? binaryCheck.path : findCommentCheckerPackageBinary()
+  const resolvedPath = binaryCheck.exists
+    ? binaryCheck.path
+    : findCommentCheckerPackageBinary() ?? findCommentCheckerCacheBinary()
 
   if (!resolvedPath) {
     return {
@@ -140,4 +160,3 @@ export async function checkCommentChecker(): Promise<DependencyInfo> {
     path: resolvedPath,
   }
 }
-

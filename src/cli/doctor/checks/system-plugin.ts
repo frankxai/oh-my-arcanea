@@ -16,6 +16,8 @@ interface OpenCodeConfigShape {
   plugin?: string[]
 }
 
+const PACKAGE_ALIASES = [PACKAGE_NAME, "oh-my-arcanea", "oh-my-openagent"]
+
 function detectConfigPath(): string | null {
   const paths = getOpenCodeConfigPaths({ binary: "opencode", version: null })
   if (existsSync(paths.configJsonc)) return paths.configJsonc
@@ -24,19 +26,24 @@ function detectConfigPath(): string | null {
 }
 
 function parsePluginVersion(entry: string): string | null {
-  if (!entry.startsWith(`${PACKAGE_NAME}@`)) return null
-  const value = entry.slice(PACKAGE_NAME.length + 1)
-  if (!value || value === "latest") return null
-  return value
+  for (const pkg of PACKAGE_ALIASES) {
+    if (!entry.startsWith(`${pkg}@`)) continue
+    const value = entry.slice(pkg.length + 1)
+    if (!value || value === "latest") return null
+    return value
+  }
+  return null
 }
 
 function findPluginEntry(entries: string[]): { entry: string; isLocalDev: boolean } | null {
   for (const entry of entries) {
-    if (entry === PACKAGE_NAME || entry.startsWith(`${PACKAGE_NAME}@`)) {
-      return { entry, isLocalDev: false }
-    }
-    if (entry.startsWith("file://") && entry.includes(PACKAGE_NAME)) {
-      return { entry, isLocalDev: true }
+    for (const pkg of PACKAGE_ALIASES) {
+      if (entry === pkg || entry.startsWith(`${pkg}@`)) {
+        return { entry, isLocalDev: false }
+      }
+      if (entry.startsWith("file://") && entry.includes(pkg)) {
+        return { entry, isLocalDev: true }
+      }
     }
   }
 
