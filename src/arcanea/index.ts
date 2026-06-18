@@ -54,3 +54,41 @@ export type {
   CoordinationPlan,
   CoordinationPhase,
 } from "./luminor-swarm"
+
+// Harness Checklist
+export {
+  runHarnessChecklist,
+  validateAgentInstructions,
+  validateToolDesign,
+  validateContextDelivery,
+  validatePlanningArtifacts,
+  validatePermissionsAndSandbox,
+  validateVerificationLoop,
+  validateComponentRemoval,
+  GUARDIAN_TOOL_MAP,
+  VERIFICATION_CRITERIA,
+  REMOVAL_CRITERIA,
+} from "./harness-checklist"
+
+export type {
+  ChecklistStatus,
+  ChecklistItem,
+  ChecklistResult,
+  HarnessReport,
+} from "./harness-checklist"
+
+// Harness Permissions
+export {
+  getPermissionProfile,
+  isOperationAllowed,
+  getOperationalLimits,
+  validateActionWithinBounds,
+  getAllPermissionProfiles,
+} from "./harness-permissions"
+
+export type {
+  OperationType,
+  GuardianPermissionProfile,
+  OperationalLimits,
+  BoundsCheckResult,
+} from "./harness-permissions"
